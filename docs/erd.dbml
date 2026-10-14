@@ -1,0 +1,63 @@
+Table users {
+  id objectid [pk]
+  name varchar [not null]
+  email varchar [not null, unique]
+  password_hash varchar [not null]
+  role varchar [not null, note: 'student | instructor']
+  avatar_url varchar
+  created_at datetime [default: `now()`]
+}
+
+Table courses {
+  id objectid [pk]
+  title varchar [not null]
+  description text
+  category varchar [note: 'Web Dev | Data | Design | ...']
+  thumbnail_url varchar
+  instructor_id objectid [not null]
+  rating_avg decimal [note: 'seeded in MVP, no reviews system yet']
+  rating_count int
+  is_published boolean [default: true]
+  deleted_at datetime [note: 'soft delete, null means active']
+  created_at datetime [default: `now()`]
+  updated_at datetime
+}
+
+Table lessons {
+  id objectid [pk]
+  course_id objectid [not null]
+  title varchar [not null]
+  video_url varchar [not null, note: 'YouTube or hosted video link']
+  duration_min int
+  position int [not null, note: 'order inside the course']
+  created_at datetime [default: `now()`]
+}
+
+Table enrollments {
+  id objectid [pk]
+  student_id objectid [not null]
+  course_id objectid [not null]
+  enrolled_at datetime [default: `now()`]
+
+  indexes {
+    (student_id, course_id) [unique]
+  }
+}
+
+Table progress {
+  id objectid [pk]
+  enrollment_id objectid [not null]
+  lesson_id objectid [not null]
+  completed_at datetime [default: `now()`]
+
+  indexes {
+    (enrollment_id, lesson_id) [unique]
+  }
+}
+
+Ref: courses.instructor_id > users.id
+Ref: lessons.course_id > courses.id
+Ref: enrollments.student_id > users.id
+Ref: enrollments.course_id > courses.id
+Ref: progress.enrollment_id > enrollments.id
+Ref: progress.lesson_id > lessons.id
