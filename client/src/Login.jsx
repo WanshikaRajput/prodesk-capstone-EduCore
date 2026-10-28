@@ -29,7 +29,7 @@ export default function Login() {
         navigate('/dashboard');
       }
     } catch (err) {
-      setError('Server se connect nahi ho paya');
+      setError('Could not connect to server');
     }
     setLoading(false);
   };
@@ -43,7 +43,7 @@ export default function Login() {
       <br /><br />
       <button type="submit" disabled={loading}>{loading ? 'Please wait...' : 'Login'}</button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <p>Naya user? <Link to="/register">Register</Link></p>
+      <p>Ne user? <Link to="/register">Register</Link></p>
     </form>
   );
 }

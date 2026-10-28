@@ -10,17 +10,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => res.send('EduCore API chal raha hai'));
+app.get('/', (req, res) => res.send('EduCore API is running'));
 
 app.use('/api/auth', require('./routes/auth'));
 
-app.get('/api/courses', authMiddleware, (req, res) => {
-  res.json([
-    { id: 1, title: 'Intro to Web Development' },
-    { id: 2, title: 'Data Structures Basics' },
-    { id: 3, title: 'Database Fundamentals' },
-  ]);
-});
+app.use('/api/courses', authMiddleware, require('./routes/courses'));
 
 const PORT = process.env.PORT || 5000;
 

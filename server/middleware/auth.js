@@ -4,7 +4,7 @@ module.exports = (req, res, next) => {
   const header = req.headers.authorization;
 
   if (!header || !header.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Token nahi mila' });
+    return res.status(401).json({ message: 'No token provided' });
   }
 
   const token = header.split(' ')[1];
@@ -13,6 +13,6 @@ module.exports = (req, res, next) => {
     req.user = jwt.verify(token, process.env.JWT_SECRET);
     next();
   } catch (err) {
-    return res.status(401).json({ message: 'Token invalid ya expired hai' });
+    return res.status(401).json({ message: 'Token is invalid or expired' });
   }
 };

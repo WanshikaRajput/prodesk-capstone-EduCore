@@ -10,12 +10,12 @@ router.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Sab fields bharo' });
+      return res.status(400).json({ message: 'Fill all fields' });
     }
 
     const exists = await User.findOne({ email });
     if (exists) {
-      return res.status(400).json({ message: 'Email already registered hai' });
+      return res.status(400).json({ message: 'Email is already registered' });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -37,12 +37,12 @@ router.post('/login', async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: 'Invalid email ya password' });
+      return res.status(400).json({ message: 'Invalid email or password' });
     }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return res.status(400).json({ message: 'Invalid email ya password' });
+      return res.status(400).json({ message: 'Invalid email or password' });
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
