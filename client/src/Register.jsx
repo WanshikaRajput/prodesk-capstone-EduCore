@@ -28,7 +28,7 @@ export default function Register() {
         navigate('/login');
       }
     } catch (err) {
-      setError('Server se connect nahi ho paya');
+      setError('Could not connect to server');
     }
     setLoading(false);
   };
@@ -44,7 +44,7 @@ export default function Register() {
       <br /><br />
       <button type="submit" disabled={loading}>{loading ? 'Please wait...' : 'Register'}</button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <p>Already account hai? <Link to="/login">Login</Link></p>
+      <p>Already have an account? <Link to="/login">Login</Link></p>
     </form>
   );
 }
