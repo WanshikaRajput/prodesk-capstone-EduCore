@@ -1,10 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Course = require('../models/Course');
-
+const validate = require('../middleware/validate');
+const { courseSchema } = require('../validators/schemas');
 const router = express.Router();
 
-// Sirf login user ke apne courses
+
 router.get('/', async (req, res) => {
   try {
     const courses = await Course.find({ authorId: req.user.id }).sort({ createdAt: -1 });
@@ -14,8 +15,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Naya course banao (authorId token se aata hai)
-router.post('/', async (req, res) => {
+
+router.post('/', validate(courseSchema), async (req, res) => {
   try {
     const { title, description, price } = req.body;
     if (!title) return res.status(400).json({ message: 'Title is required' });
@@ -32,7 +33,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Helper: course dhundo aur ownership check karo
+
 async function getOwnedCourse(req, res) {
   if (!mongoose.isValidObjectId(req.params.id)) {
     res.status(400).json({ message: 'Invalid course id' });
@@ -59,7 +60,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validate(courseSchema.partial()), async (req, res) => {
   try {
     const course = await getOwnedCourse(req, res);
     if (!course) return;
