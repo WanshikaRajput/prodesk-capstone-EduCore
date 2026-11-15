@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const authMiddleware = require('./middleware/auth');
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' }));
 app.use(express.json());
 
 app.get('/', (req, res) => res.send('EduCore API is running'));
