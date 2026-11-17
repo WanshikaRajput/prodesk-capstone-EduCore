@@ -43,7 +43,7 @@ export default function Login() {
       <br /><br />
       <button type="submit" disabled={loading}>{loading ? 'Please wait...' : 'Login'}</button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <p>Ne user? <Link to="/register">Register</Link></p>
+      <p>New user? <Link to="/register">Register</Link></p>
     </form>
   );
 }
